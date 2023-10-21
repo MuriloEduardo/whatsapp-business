@@ -86,7 +86,6 @@ const processMessageWithIAViaWhatsApp = async (whatsappRequest) => {
     console.log('destinationNumber', destinationNumber)
 
     const aiChoices = await queryAIForResponse(receivedMessages)
-    console.log('aiChoices', aiChoices)
 
     for (const choice of aiChoices) {
         const aiResponse = choice.message.content
