@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { VERIFY_TOKEN } = require('../env');
 const MessageModel = require('../models/Message');
+const { insert } = require('../services/mongoService');
 
 router.get('/webhook', async (req, res) => {
   const { query } = req;
