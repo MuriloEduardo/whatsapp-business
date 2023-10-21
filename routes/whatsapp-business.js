@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { VERIFY_TOKEN } = require('../env');
+const MessageModel = require('../models/Message');
 
 router.get('/webhook/verify', async (req, res) => {
   const { query } = req;
@@ -12,6 +13,14 @@ router.get('/webhook/verify', async (req, res) => {
   }
 
   res.sendStatus(403);
+});
+
+router.post('/webhook', async (req, res) => {
+  const { body } = req;
+
+  await insert(MessageModel, body);
+
+  res.sendStatus(200);
 });
 
 module.exports = router;
