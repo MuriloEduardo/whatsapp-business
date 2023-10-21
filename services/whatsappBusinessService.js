@@ -41,31 +41,44 @@ const sendResponseViaWhatsApp = async (textResponse, receivedNumber) => {
         },
     };
 
-    await fetch(url, {
-        method: 'POST',
-        headers: headers,
-        body: JSON.stringify(data)
-    });
+    try {
+        await fetch(url, {
+            method: 'POST',
+            headers: headers,
+            body: JSON.stringify(data)
+        });
+    } catch (error) {
+        console.error(error);
+    }
 }
 
 const queryAIForResponse = async (message) => {
-    return await fetch(`${OPENAI_API_URL}/conversations`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ message }),
-    });
+    try {
+        return await fetch(`${OPENAI_API_URL}/conversations`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ message }),
+        });
+    } catch (error) {
+        console.error(error);
+    }
 }
 
 
 const processMessageWithIAViaWhatsApp = async (whatsappRequest) => {
     const receivedMessages = extractTextMessages(whatsappRequest);
+    console.log('receivedMessages', receivedMessages);
+
     const destinationNumber = extractWaId(whatsappRequest);
+    console.log('destinationNumber', destinationNumber);
 
     const aiResponse = await queryAIForResponse(receivedMessages);
+    console.log('aiResponse', aiResponse);
 
-    await sendResponseViaWhatsApp(aiResponse, destinationNumber);
+    const sended = await sendResponseViaWhatsApp(aiResponse, destinationNumber);
+    console.log('sendResponseViaWhatsApp', sended);
 }
 
 module.exports = {
