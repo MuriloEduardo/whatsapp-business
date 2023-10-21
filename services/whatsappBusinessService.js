@@ -42,13 +42,15 @@ const sendResponseViaWhatsApp = async (textResponse, receivedNumber) => {
     }
 
     try {
-        return await fetch(url, {
+        const response = await fetch(url, {
             method: 'POST',
             headers: headers,
             body: JSON.stringify(data)
         })
+
+        return response.json()
     } catch (error) {
-        console.error('sendResponseViaWhatsApp error', error)
+        console.error('sendResponseViaWhatsApp error', error.response)
     }
 }
 
