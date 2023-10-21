@@ -1,4 +1,4 @@
-const { API_VERSION, SENDER_NUMBER, TOKEN, OPENAI_API_URL } = require("../env")
+const { API_VERSION, TOKEN, OPENAI_API_URL } = require("../env")
 
 const extractTextMessages = (webhookData) => {
     if (webhookData && webhookData.entry && webhookData.entry.length > 0) {
@@ -30,8 +30,8 @@ const extractWaId = (webhookData) => {
     return null
 }
 
-const sendResponseViaWhatsApp = async (textResponse, receivedNumber) => {
-    const url = `https://graph.facebook.com/${API_VERSION}/${SENDER_NUMBER}/messages`
+const sendResponseViaWhatsApp = async (textResponse, receivedNumber, fromNumberId) => {
+    const url = `https://graph.facebook.com/${API_VERSION}/${fromNumberId}/messages`
     const headers = {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${TOKEN}`,
@@ -77,6 +77,16 @@ const queryAIForResponse = async (message) => {
     }
 }
 
+const extractMetadataPhoneNumberId = (webhookData) => {
+    if (webhookData && webhookData.entry && webhookData.entry.length > 0) {
+        const value = whatsappRequest.entry[0].changes[0].value
+
+        if (value && value.metadata && value.metadata.phone_number_id) {
+            return value.metadata.phone_number_id
+        }
+    }
+}
+
 
 const processMessageWithIAViaWhatsApp = async (whatsappRequest) => {
     console.log('whatsappRequest', whatsappRequest.entry[0].changes[0].value);
@@ -86,6 +96,8 @@ const processMessageWithIAViaWhatsApp = async (whatsappRequest) => {
 
     const destinationNumber = extractWaId(whatsappRequest)
     console.log('destinationNumber', destinationNumber)
+
+    const receivedNumber = extractMetadataPhoneNumberId(whatsappRequest)
 
     if (!receivedMessages || !destinationNumber) {
         console.log('No messages to process', whatsappRequest);
@@ -103,7 +115,7 @@ const processMessageWithIAViaWhatsApp = async (whatsappRequest) => {
         const aiResponse = choice.message.content
         console.log('aiResponse', aiResponse)
 
-        const sended = await sendResponseViaWhatsApp(aiResponse, destinationNumber)
+        const sended = await sendResponseViaWhatsApp(aiResponse, destinationNumber, receivedNumber)
         console.log('sendResponseViaWhatsApp', sended)
     }
 }
