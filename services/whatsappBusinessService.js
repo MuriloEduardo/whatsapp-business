@@ -1,4 +1,4 @@
-const { API_VERSION, SENDER_NUMBER, TOKEN } = require("../env");
+const { API_VERSION, SENDER_NUMBER, TOKEN, OPENAI_API_URL } = require("../env");
 
 const extractTextMessages = (webhookData) => {
     if (webhookData && webhookData.entry && webhookData.entry.length > 0) {
