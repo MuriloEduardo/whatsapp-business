@@ -48,13 +48,13 @@ const sendResponseViaWhatsApp = async (textResponse, receivedNumber) => {
     });
 }
 
-const queryAIForResponse = async (messages) => {
+const queryAIForResponse = async (message) => {
     return await fetch(`${OPENAI_API_URL}/conversations`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ messages }),
+        body: JSON.stringify({ message }),
     });
 }
 
