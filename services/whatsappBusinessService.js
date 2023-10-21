@@ -42,13 +42,13 @@ const sendResponseViaWhatsApp = async (textResponse, receivedNumber) => {
     };
 
     try {
-        await fetch(url, {
+        return await fetch(url, {
             method: 'POST',
             headers: headers,
             body: JSON.stringify(data)
         });
     } catch (error) {
-        console.error(error);
+        console.error('sendResponseViaWhatsApp error', error);
     }
 }
 
@@ -62,7 +62,7 @@ const queryAIForResponse = async (message) => {
             body: JSON.stringify({ message }),
         });
     } catch (error) {
-        console.error(error);
+        console.error('queryAIForResponse error', error);
     }
 }
 
