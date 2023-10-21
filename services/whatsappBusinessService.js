@@ -79,7 +79,7 @@ const queryAIForResponse = async (message) => {
 
 const extractMetadataPhoneNumberId = (webhookData) => {
     if (webhookData && webhookData.entry && webhookData.entry.length > 0) {
-        const value = whatsappRequest.entry[0].changes[0].value
+        const value = webhookData.entry[0].changes[0].value
 
         if (value && value.metadata && value.metadata.phone_number_id) {
             return value.metadata.phone_number_id
