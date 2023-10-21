@@ -85,7 +85,17 @@ const processMessageWithIAViaWhatsApp = async (whatsappRequest) => {
     const destinationNumber = extractWaId(whatsappRequest)
     console.log('destinationNumber', destinationNumber)
 
+    if (!receivedMessages || !destinationNumber) {
+        console.log('No messages to process', whatsappRequest);
+        return;
+    }
+
     const aiChoices = await queryAIForResponse(receivedMessages)
+
+    if (!aiChoices.length) {
+        console.log('No AI response', whatsappRequest);
+        return;
+    }
 
     for (const choice of aiChoices) {
         const aiResponse = choice.message.content
