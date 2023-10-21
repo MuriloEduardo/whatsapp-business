@@ -96,7 +96,7 @@ const processMessageWithIAViaWhatsApp = async (whatsappRequest) => {
     const destinationNumber = extractWaId(whatsappRequest)
     console.log('destinationNumber', destinationNumber)
 
-    const receivedNumber = extractMetadataPhoneNumberId(whatsappRequest)
+    const fromNumberId = extractMetadataPhoneNumberId(whatsappRequest)
 
     if (!receivedMessages || !destinationNumber) {
         console.log('No messages to process', whatsappRequest);
@@ -114,7 +114,7 @@ const processMessageWithIAViaWhatsApp = async (whatsappRequest) => {
         const aiResponse = choice.message.content
         console.log('aiResponse', aiResponse)
 
-        const sended = await sendResponseViaWhatsApp(aiResponse, destinationNumber, receivedNumber)
+        const sended = await sendResponseViaWhatsApp(aiResponse, destinationNumber, fromNumberId)
         console.log('sendResponseViaWhatsApp', sended)
     }
 }
