@@ -87,7 +87,6 @@ const extractMetadataPhoneNumberId = (webhookData) => {
     }
 }
 
-
 const processMessageWithIAViaWhatsApp = async (whatsappRequest) => {
     console.log('whatsappRequest', whatsappRequest.entry[0].changes[0].value);
 
