@@ -88,8 +88,6 @@ const extractMetadataPhoneNumberId = (webhookData) => {
 }
 
 const processMessageWithIAViaWhatsApp = async (whatsappRequest) => {
-    console.log('whatsappRequest', whatsappRequest.entry[0].changes[0].value);
-
     const receivedMessages = extractTextMessages(whatsappRequest)
     console.log('receivedMessages', receivedMessages)
 
@@ -100,14 +98,14 @@ const processMessageWithIAViaWhatsApp = async (whatsappRequest) => {
     console.log('fromNumberId', fromNumberId);
 
     if (!receivedMessages || !destinationNumber) {
-        console.log('No messages to process', whatsappRequest);
+        console.log('No messages to process');
         return;
     }
 
     const aiChoices = await queryAIForResponse(receivedMessages)
 
     if (!aiChoices.length) {
-        console.log('No AI response', whatsappRequest);
+        console.log('No AI response');
         return;
     }
 
