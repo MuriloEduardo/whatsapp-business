@@ -19,6 +19,8 @@ const extractTextMessages = (webhookData) => {
 }
 
 const extractWaId = (webhookData) => {
+    console.log('extractWaId', webhookData.entry[0].changes[0].value.messages);
+
     if (webhookData && webhookData.entry && webhookData.entry.length > 0) {
         const contacts = webhookData.entry[0].changes[0].value.contacts
 
@@ -28,6 +30,16 @@ const extractWaId = (webhookData) => {
     }
 
     return null
+}
+
+const extractMetadataPhoneNumberId = (webhookData) => {
+    if (webhookData && webhookData.entry && webhookData.entry.length > 0) {
+        const value = webhookData.entry[0].changes[0].value
+
+        if (value && value.metadata && value.metadata.phone_number_id) {
+            return value.metadata.phone_number_id
+        }
+    }
 }
 
 const sendResponseViaWhatsApp = async (textResponse, receivedNumber, fromNumberId) => {
@@ -74,16 +86,6 @@ const queryAIForResponse = async (message) => {
         return aiChoices
     } catch (error) {
         console.error('queryAIForResponse error', error)
-    }
-}
-
-const extractMetadataPhoneNumberId = (webhookData) => {
-    if (webhookData && webhookData.entry && webhookData.entry.length > 0) {
-        const value = webhookData.entry[0].changes[0].value
-
-        if (value && value.metadata && value.metadata.phone_number_id) {
-            return value.metadata.phone_number_id
-        }
     }
 }
 
