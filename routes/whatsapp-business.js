@@ -16,9 +16,9 @@ router.get('/webhook', async (req, res) => {
 });
 
 router.post('/webhook', async (req, res) => {
-  const { body } = req;
+  const { body, headers } = req;
 
-  await insert(MessageModel, body);
+  await insert(MessageModel, { headers, body });
 
   res.sendStatus(200);
 });
