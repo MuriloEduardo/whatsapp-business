@@ -97,6 +97,7 @@ const processMessageWithIAViaWhatsApp = async (whatsappRequest) => {
     console.log('destinationNumber', destinationNumber)
 
     const fromNumberId = extractMetadataPhoneNumberId(whatsappRequest)
+    console.log('fromNumberId', fromNumberId);
 
     if (!receivedMessages || !destinationNumber) {
         console.log('No messages to process', whatsappRequest);
