@@ -3,7 +3,7 @@ const router = express.Router();
 const { VERIFY_TOKEN } = require('../env');
 const MessageModel = require('../models/Message');
 
-router.get('/webhook/verify', async (req, res) => {
+router.get('/webhook', async (req, res) => {
   const { query } = req;
   const challenge = query['hub.challenge']
   const verify_token = query['hub.verify_token']
