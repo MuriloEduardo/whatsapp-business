@@ -1,8 +1,10 @@
 const express = require('express');
-const router = express.Router();
 const { VERIFY_TOKEN } = require('../env');
 const MessageModel = require('../models/Message');
 const { insert } = require('../services/mongoService');
+const { processMessageWithIAViaWhatsApp } = require('../services/whatsappBusinessService');
+
+const router = express.Router();
 
 router.get('/webhook', async (req, res) => {
   const { query } = req;
@@ -20,6 +22,8 @@ router.post('/webhook', async (req, res) => {
   const { body } = req;
 
   await insert(MessageModel, body);
+
+  await processMessageWithIAViaWhatsApp(body);
 
   res.sendStatus(200);
 });
