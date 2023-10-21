@@ -19,8 +19,6 @@ const extractTextMessages = (webhookData) => {
 }
 
 const extractWaId = (webhookData) => {
-    console.log('extractWaId', webhookData.entry[0].changes[0].value.messages);
-
     if (webhookData && webhookData.entry && webhookData.entry.length > 0) {
         const contacts = webhookData.entry[0].changes[0].value.contacts
 
