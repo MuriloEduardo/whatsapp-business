@@ -4,14 +4,18 @@ const extractTextMessages = (webhookData) => {
     if (webhookData && webhookData.entry && webhookData.entry.length > 0) {
         const messages = webhookData.entry[0].changes[0].value.messages
 
-        const textMessages = messages
-            .filter((message) => message.type === 'text')
-            .map((message) => message.text.body)
+        if (messages) {
+            const textMessages = messages
+                .filter((message) => message.type === 'text')
+                .map((message) => message.text.body)
 
-        return textMessages
+            return textMessages
+        } else {
+            console.error('extractTextMessages 1 error', webhookData)
+        }
     }
 
-    return []
+    console.error('extractTextMessages 2 error', webhookData)
 }
 
 const extractWaId = (webhookData) => {
