@@ -79,6 +79,8 @@ const queryAIForResponse = async (message) => {
 
 
 const processMessageWithIAViaWhatsApp = async (whatsappRequest) => {
+    console.log('whatsappRequest', whatsappRequest);
+
     const receivedMessages = extractTextMessages(whatsappRequest)
     console.log('receivedMessages', receivedMessages)
 
