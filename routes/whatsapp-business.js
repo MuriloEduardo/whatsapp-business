@@ -3,7 +3,7 @@ const pubsub = require('../utils/pubsub')
 const { VERIFY_TOKEN } = require('../utils/env')
 const MessageModel = require('../models/Message')
 const { insert } = require('../services/mongoService')
-const { sendText, processMessageWithIAViaWhatsApp, extractWaId, extractTextMessages, extractMetadataPhoneNumberId } = require('../services/whatsappBusinessService')
+const { sendText, extractWaId, extractTextMessages, extractMetadataPhoneNumberId } = require('../services/whatsappBusinessService')
 
 const router = express.Router()
 
