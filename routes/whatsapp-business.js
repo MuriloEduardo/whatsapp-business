@@ -46,7 +46,7 @@ router.post('/send', async (req, res) => {
   }
 })
 
-router.get('/extract-infos', async (req, res) => {
+router.post('/extract-infos', async (req, res) => {
   const { body } = req
 
   try {
