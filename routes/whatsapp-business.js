@@ -26,7 +26,7 @@ router.post('/webhook', async (req, res) => {
 
   pubsub
     .topic('whatsapp-business-messages')
-    .publish(Buffer.from(JSON.stringify(body)))
+    .publish(body)
 
   res.sendStatus(200)
 })
