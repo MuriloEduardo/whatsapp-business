@@ -28,10 +28,23 @@ router.post('/webhook', async (req, res) => {
     .topic('whatsapp-business-messages')
     .publish(body)
 
-  res.sendStatus(200)
+  res.sendStatus(201)
 })
 
 router.post('/send', async (req, res) => {
+  const { body } = req
+  const { text, to, from } = body
+
+  try {
+    await sendText(text, to, from)
+
+    res.sendStatus(201)
+  } catch (error) {
+    res.status(500).json({ error })
+  }
+})
+
+router.get('/extract-infos', async (req, res) => {
   const { body } = req
 
   try {
@@ -39,9 +52,7 @@ router.post('/send', async (req, res) => {
     const text = extractTextMessages(body)
     const from = extractMetadataPhoneNumberId(body)
 
-    await sendText(text, to, from)
-
-    res.sendStatus(201)
+    res.status(200).json({ to, text, from })
   } catch (error) {
     res.status(500).json({ error })
   }
