@@ -24,9 +24,11 @@ router.post('/webhook', async (req, res) => {
 
   await insert(MessageModel, body)
 
+  const bodyBuffer = Buffer.from(JSON.stringify(body))
+
   pubsub
     .topic('whatsapp-business-messages')
-    .publish(body)
+    .publish(bodyBuffer)
 
   res.sendStatus(201)
 })
