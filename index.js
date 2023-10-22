@@ -1,13 +1,12 @@
-const { PORT } = require('./env');
-const express = require('express');
-const app = express();
+const express = require('express')
+const { PORT } = require('./utils/env')
 
-app.use(express.json());
+const app = express()
 
-const whatsAppBusinessRoutes = require('./routes/whatsapp-business');
+app.use(express.json())
 
-app.use('/whatsapp-business', whatsAppBusinessRoutes);
+const whatsAppBusinessRoutes = require('./routes/whatsapp-business')
 
-app.listen(PORT, () => {
-    console.log(`Servidor Express rodando na porta ${PORT}`);
-});
+app.use('/whatsapp-business', whatsAppBusinessRoutes)
+
+app.listen(PORT, () => console.log(`Running in ${PORT}`))

@@ -1,4 +1,4 @@
-const { API_VERSION, TOKEN, OPENAI_API_URL } = require("../env")
+const { API_VERSION, TOKEN, OPENAI_API_URL } = require("../utils/env")
 
 const extractTextMessages = (webhookData) => {
     if (webhookData && webhookData.entry && webhookData.entry.length > 0) {
@@ -40,18 +40,18 @@ const extractMetadataPhoneNumberId = (webhookData) => {
     }
 }
 
-const sendResponseViaWhatsApp = async (textResponse, receivedNumber, fromNumberId) => {
-    const url = `https://graph.facebook.com/${API_VERSION}/${fromNumberId}/messages`
+const sendText = async (text, to, from) => {
+    const url = `https://graph.facebook.com/${API_VERSION}/${from}/messages`
     const headers = {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${TOKEN}`,
     }
     const data = {
+        to,
         type: 'text',
         messaging_product: 'whatsapp',
-        to: receivedNumber,
         text: {
-            body: textResponse,
+            body: text,
         },
     }
 
@@ -64,60 +64,14 @@ const sendResponseViaWhatsApp = async (textResponse, receivedNumber, fromNumberI
 
         return response.json()
     } catch (error) {
-        console.error('sendResponseViaWhatsApp error', error.response)
-    }
-}
-
-const queryAIForResponse = async (message) => {
-    try {
-        const aiResponse = await fetch(`${OPENAI_API_URL}/conversations`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ message }),
-        })
-
-        const aiResponseJson = await aiResponse.json()
-        const aiChoices = aiResponseJson.choices
-
-        return aiChoices
-    } catch (error) {
-        console.error('queryAIForResponse error', error)
-    }
-}
-
-const processMessageWithIAViaWhatsApp = async (whatsappRequest) => {
-    const receivedMessages = extractTextMessages(whatsappRequest)
-    console.log('receivedMessages', receivedMessages)
-
-    const destinationNumber = extractWaId(whatsappRequest)
-    console.log('destinationNumber', destinationNumber)
-
-    const fromNumberId = extractMetadataPhoneNumberId(whatsappRequest)
-    console.log('fromNumberId', fromNumberId);
-
-    if (!receivedMessages || !destinationNumber) {
-        console.log('No messages to process');
-        return;
-    }
-
-    const aiChoices = await queryAIForResponse(receivedMessages)
-
-    if (!aiChoices.length) {
-        console.log('No AI response');
-        return;
-    }
-
-    for (const choice of aiChoices) {
-        const aiResponse = choice.message.content
-        console.log('aiResponse', aiResponse)
-
-        const sended = await sendResponseViaWhatsApp(aiResponse, destinationNumber, fromNumberId)
-        console.log('sendResponseViaWhatsApp', sended)
+        console.error('sendText error', error.response)
+        throw error.response
     }
 }
 
 module.exports = {
-    processMessageWithIAViaWhatsApp,
+    sendText,
+    extractWaId,
+    extractTextMessages,
+    extractMetadataPhoneNumberId,
 }

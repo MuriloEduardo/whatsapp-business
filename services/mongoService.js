@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const { MONGO_URL } = require('../env');
+const { MONGO_URL } = require('../utils/env');
 
 (async () => {
   try {
